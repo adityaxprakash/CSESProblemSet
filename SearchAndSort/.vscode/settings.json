@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "*.cpp": "cpp",
-        "ratio": "cpp",
-        "random": "cpp",
-        "valarray": "cpp",
-        "iostream": "cpp"
-    }
-}
