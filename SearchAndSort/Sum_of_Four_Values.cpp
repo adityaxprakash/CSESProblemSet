@@ -13,33 +13,28 @@ signed main()
     cout.tie(0);
     int n, x;
     cin >> n >> x;
-    vector<pair<int, int>> a(n);
+    vector<int> a(n);
     for (int i = 0; i < n; i++)
     {
-        cin >> a[i].F;
-        a[i].S = i + 1;
+        cin >> a[i];
     }
-    sort(all(a));
-    map<int, set<pair<int, int>>> hash;
+    map<int, pair<int, int>> hash;
     for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < i; j++)
+        for (int j = i + 1; j < n; j++)
         {
-            int targ = x - (a[i].F + a[j].F);
-            if (hash[targ].size() > 0)
+            int targ = x - (a[i] + a[j]);
+            if (hash.find(targ) != hash.end())
             {
-                auto it = hash[targ].lower_bound({j, j});
-                if(it == hash[targ].begin())
-                {
-                    continue;
-                }
-                pair<int,int> ps=*it;
-                int i1 =a[ps.F].S;
-                int i2 =a[ps.S].S;
-                cout << i1 << " " << i2 << " " << a[i].S << " " << a[j].S;
+                int i1 = hash[targ].F + 1;
+                int i2 = hash[targ].S + 1;
+                cout << i1 << " " << i2 << " " << i + 1 << " " << j + 1;
                 return 0;
             }
-            hash[a[i].F + a[j].F].insert({i, j});
+        }
+        for (int j = 0; j < i; j++)
+        {
+            hash[a[i] + a[j]] = {i, j};
         }
     }
     cout << "IMPOSSIBLE";
