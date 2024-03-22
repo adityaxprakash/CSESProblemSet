@@ -20,14 +20,15 @@ signed main()
         cin >> x[i];
         prefix[i + 1] = prefix[i] + x[i];
     }
-    int l = 1;
-    int r = a;
-    int maxSum = -1e18;
-    while (r <= n)
+    int max_sum = -1e18;
+    multiset<int> vals;
+    for (int i = a; i <= n; i++)
     {
-        maxSum=max(maxSum,prefix[r]-prefix[l-1]);
-        
+        if (i > b)
+            vals.erase(vals.find(prefix[i - b - 1]));
+        vals.insert(prefix[i - a]);
+        max_sum = max(max_sum, prefix[i] - *vals.begin());
     }
-    cout << maxSum;
+    cout << max_sum;
     return 0;
 }
