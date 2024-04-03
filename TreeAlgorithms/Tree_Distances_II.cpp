@@ -10,26 +10,24 @@ using namespace std;
 const int lim = 2e5 + 1;
 vector<int> adj[lim];
 int n;
-int diameter = 0;
 
-int dfs(int u, int p)
+int opt, depth = -1;
+vector<vi> dist(2, vi(lim, -1));
+
+void dfs(int u, int p, int d, int i)
 {
-    int mx1 = -1;
-    int mx2 = -1;
-    int h = 0;
+    dist[i][u] = dist[i][p] + 1;
+    if (depth < d)
+    {
+        opt = u;
+        depth = d;
+    }
     for (auto v : adj[u])
     {
         if (v == p)
             continue;
-        int hv = dfs(v, u);
-        h = max(h, hv + 1);
-        if (mx2 < hv)
-            mx2 = hv;
-        if (mx1 < mx2)
-            swap(mx1, mx2);
+        dfs(v, u, d + 1, i);
     }
-    diameter = max(diameter, mx1 + mx2 + 2);
-    return h;
 }
 
 signed main()
@@ -46,8 +44,14 @@ signed main()
         adj[a].pb(b);
         adj[b].pb(a);
     }
-    dfs(1, -1);
-    cout << diameter;
-
+    dfs(1, 0, 0, 0);
+    int a = opt;
+    dfs(a, 0, 0, 0);
+    int b = opt;
+    dfs(b, 0, 0, 1);
+    for (int i = 1; i <= n; i++)
+    {
+        cout << max(dist[0][i], dist[1][i]) << " ";
+    }
     return 0;
 }
