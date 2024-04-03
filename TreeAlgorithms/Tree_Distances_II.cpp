@@ -11,22 +11,34 @@ const int lim = 2e5 + 1;
 vector<int> adj[lim];
 int n;
 
-int opt, depth = -1;
-vector<vi> dist(2, vi(lim, -1));
+vi childSum(lim, 0);
+vi parSum(lim, 0);
+vi sz(lim, 0);
 
-void dfs(int u, int p, int d, int i)
+int dfs(int u, int p)
 {
-    dist[i][u] = dist[i][p] + 1;
-    if (depth < d)
+    for (auto v : adj[u])
     {
-        opt = u;
-        depth = d;
+        if (v == p)
+            continue;
+        sz[u] += dfs(v, u);
+        childSum[u] += childSum[v];
+    }
+    childSum[u] += sz[u]++;
+    return sz[u];
+}
+
+void pdfs(int u, int p)
+{
+    if (u != 1)
+    {
+        parSum[u] = childSum[p] - (sz[u] + childSum[u]) + n - sz[u] + parSum[p];
     }
     for (auto v : adj[u])
     {
         if (v == p)
             continue;
-        dfs(v, u, d + 1, i);
+        pdfs(v, u);
     }
 }
 
@@ -44,14 +56,10 @@ signed main()
         adj[a].pb(b);
         adj[b].pb(a);
     }
-    dfs(1, 0, 0, 0);
-    int a = opt;
-    dfs(a, 0, 0, 0);
-    int b = opt;
-    dfs(b, 0, 0, 1);
+    dfs(1, 0);
+    pdfs(1, 0);
     for (int i = 1; i <= n; i++)
-    {
-        cout << max(dist[0][i], dist[1][i]) << " ";
-    }
+        cout << childSum[i] + parSum[i] << " ";
+
     return 0;
 }
