@@ -22,7 +22,7 @@ using namespace __gnu_pbds;
 const int mod = 1e9 + 7;
 const ll inf = 1e18;
 
-const int N = 2e5 + 10;
+const int N = 2e5 + 2;
 int arr[N];
 ll prefix[N];
 
