@@ -16,7 +16,7 @@ signed main()
     int a[n];
     for (int i = 0; i < n; i++)
         cin >> a[i];
-    unordered_map<int, int> prefix;
+    map<int, int> prefix;
     prefix[0] = 1;
     int num_subarray = 0;
     int sum = 0;
